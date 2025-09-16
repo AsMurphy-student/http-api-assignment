@@ -16,6 +16,6 @@ const getCss = (request, response) => {
 };
 
 module.exports = {
-    getIndex,
-    getCss,
-}
+  getIndex,
+  getCss,
+};
