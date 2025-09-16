@@ -5,7 +5,30 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
+    const sendFetchRequest = (url, acceptedType) => {
+      const options = {
+        method: 'GET',
+        headers: {'Accept': acceptedType},
+      }
 
+      fetch(url, options).then((response) => {
+        response.text().then((text) => {
+          console.log(text);
+        });
+      });
+    }
+
+    const init = () => {
+      document.getElementById('send').addEventListener('click', () => {
+        const acceptedType = document.getElementById('type').value;
+        const url = document.getElementById('page').value;
+        
+        sendFetchRequest(url, acceptedType);
+      });
+    }
+    
+
+    window.onload = init;
   </script>
 </head>
 <body>
