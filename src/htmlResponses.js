@@ -3,6 +3,7 @@ const fs = require('fs');
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const css = fs.readFileSync(`${__dirname}/../client/style.css`);
 
+// Response Function which sends back response
 const respond = (request, response, code, content, type) => {
   response.writeHead(code, {
     'Content-Type': type,
@@ -12,6 +13,7 @@ const respond = (request, response, code, content, type) => {
   response.end();
 };
 
+// Function which handles what response to send and in what format
 const handleResponse = (request, response, code, message, id = undefined) => {
   if (request.acceptedTypes[0] === 'text/xml') {
     const responseXML = id
@@ -31,6 +33,7 @@ const handleResponse = (request, response, code, message, id = undefined) => {
   return respond(request, response, code, JSON.stringify(responseJSON), 'application/json');
 };
 
+// List of request functions
 const getIndex = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/html' });
   response.write(index);
