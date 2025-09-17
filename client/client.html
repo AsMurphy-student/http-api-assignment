@@ -13,7 +13,46 @@
 
       fetch(url, options).then((response) => {
         response.text().then((text) => {
-          console.log(text);
+          // console.log(text);
+          const contentType = response.headers.get('Content-Type');
+
+          const content = document.getElementById('content');
+
+          const h1 = document.getElementById('title');
+          const p = document.getElementById('message');
+
+          if (contentType === 'application/json') {
+            const parsedResponse = JSON.parse(text);
+            p.textContent = `Message: ${parsedResponse.message}`
+          }
+          else {
+            const parsedResponse = new window.DOMParser().parseFromString(text, 'text/xml');
+            p.textContent = 'Message: ' + parsedResponse.querySelector('message').textContent;
+          }
+
+          switch (response.status) {
+            case 200:
+              h1.textContent = 'Success'
+              break;
+            case 400:
+              h1.textContent = 'Bad Request'
+              break;
+            case 401:
+              h1.textContent = 'Unauthorized'
+              break;
+            case 403:
+              h1.textContent = 'Forbidden'
+              break;
+            case 500:
+              h1.textContent = 'Internal Server Error'
+              break;
+            case 501:
+              h1.textContent = 'Not Implemented'
+              break;
+            case 404:
+              h1.textContent = 'Resource Not Found'
+              break;
+          }
         });
       });
     }
@@ -50,6 +89,8 @@
     <button id="send">Send</button>
   </section>
   <section id="content">
+    <h1 id="title"></h1>
+    <p id="message"></p>
   </section>
 </body>
 </html>
