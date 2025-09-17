@@ -13,11 +13,22 @@ const respond = (request, response, code, content, type) => {
 };
 
 const handleResponse = (request, response, code, message, id = undefined) => {
-  // if (request.acceptedTypes[0] === 'text/xml') {
-  const responseXML = id ? `<response><message>${message}</message><id>${id}</id></response>` : `<response><message>${message}</message></response>`;
+  if (request.acceptedTypes[0] === 'text/xml') {
+    const responseXML = id
+      ? `<response><message>${message}</message><id>${id}</id></response>`
+      : `<response><message>${message}</message></response>`;
 
-  return respond(request, response, code, responseXML, request.acceptedTypes[0]);
-  // }
+    return respond(request, response, code, responseXML, 'text/xml');
+  }
+
+  const responseJSON = id ? {
+    message,
+    id,
+  } : {
+    message,
+  };
+
+  return respond(request, response, code, JSON.stringify(responseJSON), 'application/json');
 };
 
 const getIndex = (request, response) => {
@@ -34,6 +45,20 @@ const getCss = (request, response) => {
 
 const get200 = (request, response) => {
   handleResponse(request, response, 200, 'This is a successful response');
+};
+
+const get400 = (request, response) => {
+  if (request.query.valid === 'true') {
+    return handleResponse(request, response, 200, 'This is a successful response');
+  }
+  return handleResponse(request, response, 400, 'Missing valid query parameter set to true', 'badRequest');
+};
+
+const get401 = (request, response) => {
+  if (request.query.loggedIn === 'yes') {
+    return handleResponse(request, response, 200, 'This is a successful response');
+  }
+  return handleResponse(request, response, 401, 'Missing loggedIn query parameter set to yes', 'unauthorized');
 };
 
 const get403 = (request, response) => {
@@ -56,6 +81,8 @@ module.exports = {
   getIndex,
   getCss,
   get200,
+  get400,
+  get401,
   get403,
   get500,
   get501,
