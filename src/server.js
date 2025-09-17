@@ -11,7 +11,7 @@ const urlStruct = {
   '/internal': htmlHandler.get500,
   '/notImplemented': htmlHandler.get501,
   index: htmlHandler.get404,
-}
+};
 
 const onRequest = (request, response) => {
   const protocol = request.connection.encrypted ? 'https' : 'http';
@@ -19,7 +19,9 @@ const onRequest = (request, response) => {
 
   request.acceptedTypes = request.headers.accept.split(',');
 
-  urlStruct[parsedUrl.pathname] ? urlStruct[parsedUrl.pathname](request, response) : urlStruct.index(request, response);
+  urlStruct[parsedUrl.pathname]
+    ? urlStruct[parsedUrl.pathname](request, response)
+    : urlStruct.index(request, response);
 };
 
 http.createServer(onRequest).listen(port, () => {

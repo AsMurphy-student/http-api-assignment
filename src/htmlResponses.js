@@ -12,32 +12,12 @@ const respond = (request, response, code, content, type) => {
   response.end();
 };
 
-const handleResponse = (request, response, code) => {
+const handleResponse = (request, response, code, message, id = undefined) => {
   // if (request.acceptedTypes[0] === 'text/xml') {
-    let responseXML = '<response><message>';
-    switch (code) {
-      case 200:
-        responseXML+='This is a successful response</message>'
-        break;
-      case 403:
-        responseXML+='You do not have access to this content.</message><id>forbidden</id>'
-        break;
-      case 500:
-        responseXML+='Internal Server Error. Something went wrong.</message><id>internalError</id>'
-        break;
-      case 501:
-        responseXML+='A get request for this page has not been implemented yet. Check again later for updated content.</message><id>notImplemented</id>'
-        break;
-      default:
-        responseXML+='The page you are looking for was not found.</message><id>notFound</id>'
-        break;
-    }
-    responseXML+='</response>'
+  const responseXML = id ? `<response><message>${message}</message><id>${id}</id></response>` : `<response><message>${message}</message></response>`;
 
-    return respond(request, response, code, responseXML, request.acceptedTypes[0] === 'text/xml');
+  return respond(request, response, code, responseXML, request.acceptedTypes[0]);
   // }
-
-  
 };
 
 const getIndex = (request, response) => {
@@ -53,23 +33,23 @@ const getCss = (request, response) => {
 };
 
 const get200 = (request, response) => {
-  handleResponse(request, response, 200);
+  handleResponse(request, response, 200, 'This is a successful response');
 };
 
 const get403 = (request, response) => {
-  handleResponse(request, response, 403);
+  handleResponse(request, response, 403, 'You do not have access to this content.', 'forbidden');
 };
 
 const get500 = (request, response) => {
-  handleResponse(request, response, 500);
+  handleResponse(request, response, 500, 'Internal Server Error. Something went wrong.', 'internalError');
 };
 
 const get501 = (request, response) => {
-  handleResponse(request, response, 501);
+  handleResponse(request, response, 501, 'A get request for this page has not been implemented yet. Check again later for updated content.', 'notImplemented');
 };
 
 const get404 = (request, response) => {
-  handleResponse(request, response, 404);
+  handleResponse(request, response, 404, 'The page you are looking for was not found.', 'notFound');
 };
 
 module.exports = {
