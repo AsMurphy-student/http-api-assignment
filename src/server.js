@@ -23,7 +23,7 @@ const onRequest = (request, response) => {
 
   request.acceptedTypes = request.headers.accept.split(',');
 
-  urlStruct[parsedUrl.pathname]
+  return urlStruct[parsedUrl.pathname]
     ? urlStruct[parsedUrl.pathname](request, response)
     : urlStruct.index(request, response);
 };
