@@ -52,14 +52,14 @@ const get200 = (request, response) => {
 
 const get400 = (request, response) => {
   if (request.query.valid === 'true') {
-    return handleResponse(request, response, 200, 'This is a successful response');
+    return handleResponse(request, response, 200, 'valid query parameter of true received');
   }
   return handleResponse(request, response, 400, 'Missing valid query parameter set to true', 'badRequest');
 };
 
 const get401 = (request, response) => {
   if (request.query.loggedIn === 'yes') {
-    return handleResponse(request, response, 200, 'This is a successful response');
+    return handleResponse(request, response, 200, 'loggedIn query parameter of yes received');
   }
   return handleResponse(request, response, 401, 'Missing loggedIn query parameter set to yes', 'unauthorized');
 };
