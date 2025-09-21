@@ -13,7 +13,8 @@
 
       fetch(url, options).then((response) => {
         response.text().then((text) => {
-          // console.log(text);
+
+          console.log(text);
           const contentType = response.headers.get('Content-Type');
 
           const content = document.getElementById('content');
